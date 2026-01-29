@@ -1,5 +1,5 @@
 [project]
-name = "filemerger"
+name = "filemerger-cli"
 version = "0.3.0"
 description = "Developer CLI tool to consolidate project files into a single output"
 readme = "README.md"
