@@ -5,6 +5,7 @@ import os
 from .core import collect_files, merge_files
 from .utils import normalize_output_filename
 
+
 def main():
     parser = argparse.ArgumentParser(
         description="Consolidate project files into a single text output"
@@ -38,6 +39,11 @@ def main():
         action="store_true",
         help="More compact LLM output with fewer blank lines"
     )
+    parser.add_argument(
+        "--ai-markers",
+        action="store_true",
+        help="Use explicit AI-friendly file boundary markers"
+    )
 
     args = parser.parse_args()
 
@@ -68,6 +74,7 @@ def main():
         output_file,
         llm_mode=args.llm,
         llm_compact=args.llm_compact,
+        ai_markers=args.ai_markers,
     )
 
     print(f"✔ Merged {stats.files} files into {output_file}")
@@ -78,6 +85,7 @@ def main():
         print(f"  Lines: {stats.lines}")
         print(f"  Bytes: {stats.bytes}")
         print(f"  Skipped files: {stats.skipped_files}")
+
 
 if __name__ == "__main__":
     main()

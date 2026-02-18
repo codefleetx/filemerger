@@ -6,6 +6,7 @@ from .user_config import load_user_config
 from .config import EXCLUDED_DIRECTORIES, MAX_FILE_SIZE_MB
 from .format_default import DefaultFormatter
 from .format_llm import LLMFormatter
+from .format_ai import AIMarkerFormatter
 from .stats import MergeStats
 
 def collect_files(
@@ -54,14 +55,19 @@ def collect_files(
 
     return sorted(collected)
 
+
 def merge_files(
     files: List[str],
     output_file: str,
     *,
     llm_mode: bool = False,
     llm_compact: bool = False,
+    ai_markers: bool = False,
 ) -> MergeStats:
-    if llm_mode or llm_compact:
+
+    if ai_markers:
+        formatter = AIMarkerFormatter()
+    elif llm_mode or llm_compact:
         formatter = LLMFormatter(compact=llm_compact)
     else:
         formatter = DefaultFormatter()

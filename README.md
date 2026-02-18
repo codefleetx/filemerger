@@ -14,7 +14,7 @@ It is designed to help developers:
 ## Installation
 
 ```bash
-pip install filemerger
+pip install filemerger-cli
 ```
 
 ---
@@ -115,7 +115,7 @@ filemerger src/ --llm-compact
 
 ---
 
-## Statistics
+### 4.  Statistics
 
 Use `--stats` to print merge statistics:
 
@@ -131,6 +131,41 @@ Reported values:
 * Skipped files (binary / non-UTF8)
 
 ---
+
+### 5. AI Marker Mode (`--ai-markers`)
+
+```bash
+filemerger src/ --ai-markers
+````
+
+**Use this when:**
+
+* You need strong, explicit file boundaries for AI systems
+* You want deterministic multi-file reasoning
+* You are feeding large structured context into LLMs
+* You need machine-parsable output
+
+**Characteristics:**
+
+* Explicit file boundary markers
+* Clear begin/end delimiters
+* Unambiguous separation between files
+* Designed for reliable AI ingestion
+
+Example:
+
+```
+<<<FILE 1: path/to/file.py>>>
+<content>
+<<<END FILE>>>
+
+<<<FILE 2: another/file.js>>>
+<content>
+<<<END FILE>>>
+```
+
+---
+
 
 ## Configuration (Optional)
 
