@@ -4,22 +4,34 @@
 single plain-text output.
 
 It is designed to help developers:
+
 - Share complete code context with AI tools (ChatGPT, Gemini, Grok, Claude, etc.)
 - Review large codebases
 - Create audit or snapshot files
 - Prepare structured input for analysis
+- Generate structured multi-file context for LLM systems
 
 ---
 
-## Installation
+# Installation
+
+FileMerger is available on PyPI as:
+
+```
+
+filemerger-cli
+
+````
+
+Install with:
 
 ```bash
 pip install filemerger-cli
-```
+````
 
 ---
 
-## Basic Usage
+# Basic Usage
 
 Merge a directory:
 
@@ -41,47 +53,49 @@ filemerger . --dry-run
 
 ---
 
-## Output Modes
+# Output Modes
 
 FileMerger supports multiple output modes depending on **who (or what)** will consume the output.
 
-### 1. Default Mode (Human-Readable)
+---
+
+## 1. Default Mode (Human Readable)
 
 ```bash
 filemerger src/
 ```
 
-**Use this when:**
+Use when:
 
-* You want to read the output yourself
-* You are reviewing or auditing code
-* You want clear visual separation
+* You want to review code manually
+* You are auditing a repository
+* You want structured readable output
 
-**Characteristics:**
+Characteristics:
 
-* File lists and headers
+* File headers
 * Visual separators
-* Structured, readable layout
+* Structured readable layout
 
 ---
 
-### 2. LLM Mode (`--llm`)
+## 2. LLM Mode
 
 ```bash
 filemerger src/ --llm
 ```
 
-**Use this when:**
+Use when:
 
-* The output will be pasted into an AI system
-* You want deterministic file references
-* You want to reduce semantic noise
+* Output is intended for an AI model
+* Deterministic file ordering is required
+* Reduced formatting noise is preferred
 
-**Characteristics:**
+Characteristics:
 
-* Files are numbered (`[1]`, `[2]`, …)
-* No decorative separators
-* Simple, predictable structure
+* Files numbered sequentially
+* Minimal formatting
+* Predictable structure
 
 Example:
 
@@ -95,62 +109,39 @@ Example:
 
 ---
 
-### 3. LLM Compact Mode (`--llm-compact`)
+## 3. LLM Compact Mode
 
 ```bash
 filemerger src/ --llm-compact
 ```
 
-**Use this when:**
+Use when:
 
 * Token limits are tight
-* The project is very large
-* Maximum efficiency matters
+* Projects are large
+* Maximum efficiency is required
 
-**Characteristics:**
+Characteristics:
 
 * Same structure as `--llm`
 * Fewer blank lines
-* Minimal formatting overhead
+* Reduced output size
 
 ---
 
-### 4.  Statistics
-
-Use `--stats` to print merge statistics:
-
-```bash
-filemerger src/ --stats
-```
-
-Reported values:
-
-* Number of files
-* Total lines
-* Total bytes
-* Skipped files (binary / non-UTF8)
-
----
-
-### 5. AI Marker Mode (`--ai-markers`)
+## 4. AI Marker Mode
 
 ```bash
 filemerger src/ --ai-markers
-````
+```
 
-**Use this when:**
+Designed for deterministic multi-file AI ingestion.
 
-* You need strong, explicit file boundaries for AI systems
-* You want deterministic multi-file reasoning
-* You are feeding large structured context into LLMs
-* You need machine-parsable output
-
-**Characteristics:**
+Characteristics:
 
 * Explicit file boundary markers
-* Clear begin/end delimiters
-* Unambiguous separation between files
-* Designed for reliable AI ingestion
+* Strong machine-readable structure
+* Reliable AI context separation
 
 Example:
 
@@ -166,10 +157,125 @@ Example:
 
 ---
 
+# Statistics
 
-## Configuration (Optional)
+Display merge statistics:
 
-FileMerger supports an optional `.filemerger.toml` file in the project root.
+```bash
+filemerger src/ --stats
+```
+
+Reports:
+
+* Total files
+* Total lines
+* Total bytes
+* Skipped files (binary / non-UTF8)
+
+---
+
+# Runtime Configuration Overrides (v0.3.2)
+
+FileMerger supports **temporary runtime overrides** for configuration using CLI arguments.
+
+This allows flexible usage without modifying `.filemerger.toml` or library defaults.
+
+Configuration precedence:
+
+```
+CLI arguments
+→ .filemerger.toml
+→ config.py defaults
+```
+
+---
+
+## Allow Excluded Directories
+
+Allow directories normally excluded by default configuration.
+
+Example:
+
+```bash
+filemerger . --allow-dir migrations
+```
+
+Multiple directories:
+
+```bash
+filemerger . --allow-dir migrations,tests
+```
+
+---
+
+## Allow Excluded Files
+
+Allow files normally excluded.
+
+Example:
+
+```bash
+filemerger . --allow-file .DS_Store
+```
+
+---
+
+## Extend Allowed File Extensions
+
+Add additional file extensions.
+
+Example:
+
+```bash
+filemerger . --allow-ext .yaml,.yml
+```
+
+---
+
+## Override Maximum File Size
+
+Default maximum file size is **2MB**.
+
+Override temporarily:
+
+```bash
+filemerger . --max-size 5
+```
+
+---
+
+## Override Separator Length
+
+Customize output separator length.
+
+Example:
+
+```bash
+filemerger . --separator 40
+```
+
+---
+
+## Combined Example
+
+```bash
+filemerger . \
+  --allow-dir migrations,tests \
+  --allow-ext .yaml \
+  --allow-file .DS_Store \
+  --max-size 5 \
+  --separator 40
+```
+
+---
+
+# Configuration (Optional)
+
+FileMerger supports an optional configuration file:
+
+```
+.filemerger.toml
+```
 
 Example:
 
@@ -186,7 +292,20 @@ If the file is not present, default behavior is used.
 
 ---
 
-## License
+# Design Goals
 
-This project is licensed under the MIT License.
+FileMerger is designed with the following principles:
+
+* Deterministic output
+* Minimal configuration
+* AI-friendly formatting
+* Predictable file ordering
+* Zero project mutation
+
+---
+
+# License
+
+This project is licensed under the **MIT License**.
+
 See the [LICENSE](LICENSE) file for details.
