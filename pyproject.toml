@@ -1,6 +1,6 @@
 [project]
 name = "filemerger-cli"
-version = "0.3.1"
+version = "0.3.2"
 description = "Developer CLI tool to consolidate project files into a single output"
 readme = "README.md"
 requires-python = ">=3.8"
