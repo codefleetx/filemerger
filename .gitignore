@@ -222,3 +222,5 @@ filemerger-output.txt
 *.egg-info/
 build/
 dist/
+.venv/
+filemerger_cli.egg-info/
