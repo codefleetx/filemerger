@@ -6,7 +6,7 @@ name: Mirror GitLab to GitHub
 #
 # Required secrets (set in GitHub repo → Settings → Secrets):
 #   GITLAB_TOKEN  → GitLab PAT with read_repository scope
-#   GH_TOKEN  → GitHub PAT with repo, workflow scope
+#   GH_TOKEN      → GitHub PAT with repo, workflow scope
 #
 # Required variables (set in GitHub repo → Settings → Variables):
 #   GITLAB_REPO   → e.g. codefleet-labs/selenium  (the GitLab path)
@@ -35,8 +35,8 @@ jobs:
 
           git remote add github \
             "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
-          
-          # We ONLY push heads (branches) and tags. Ignored internal GitLab refs.
+
+          # We ONLY push heads (branches) and tags. Ignore internal GitLab refs.
           git push github --force --prune 'refs/heads/*:refs/heads/*'
           git push github --force --tags
 
